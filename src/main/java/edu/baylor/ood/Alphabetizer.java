@@ -1,20 +1,15 @@
 package edu.baylor.ood;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
-// TODO Add <T>
 public class Alphabetizer implements Subscriber<String> {
-    SortedSet<String> alphabetized;
-
     private Subscription subscription;
 
-    public Alphabetizer(SortedSet<String> alphabetized){
-        this.alphabetized = alphabetized;
+    private LineStorageWrapper lines;
+
+    public Alphabetizer(LineStorageWrapper lines) {
+        this.lines = lines;
     }
 
     @Override
@@ -25,7 +20,17 @@ public class Alphabetizer implements Subscriber<String> {
 
     @Override
     public void onNext(String item) {
-        alphabetized.add(item);
+        boolean inserted = false;
+        for (int i = 0; i < lines.getLines().size(); i++) {
+            if (item.compareTo(lines.getLines().get(i)) < 0) {
+                lines.getLines().add(i, item);
+                inserted = true;
+                break;
+            }
+        }
+        if (!inserted) {
+            lines.addLine(item);
+        }
         subscription.request(1);
     }
 
@@ -37,6 +42,7 @@ public class Alphabetizer implements Subscriber<String> {
 
     @Override
     public void onComplete() {
+        lines.setCompleted();
         System.out.println("All items have been alphabetized");
     }
 
