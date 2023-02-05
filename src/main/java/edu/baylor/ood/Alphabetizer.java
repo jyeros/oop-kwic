@@ -21,6 +21,8 @@ public class Alphabetizer implements Subscriber<String> {
     @Override
     public void onNext(String item) {
         boolean inserted = false;
+
+        // Find place to insert current line shift in alphabetized list.
         for (int i = 0; i < lines.getLines().size(); i++) {
             if (item.compareTo(lines.getLines().get(i)) < 0) {
                 lines.getLines().add(i, item);
@@ -28,6 +30,9 @@ public class Alphabetizer implements Subscriber<String> {
                 break;
             }
         }
+
+        // If a place was not found, the current line shift should be added
+        // to the end of the alphabetized list.
         if (!inserted) {
             lines.addLine(item);
         }
@@ -42,6 +47,7 @@ public class Alphabetizer implements Subscriber<String> {
 
     @Override
     public void onComplete() {
+        // Mark the end of lines being published.
         lines.setCompleted();
         System.out.println("All items have been alphabetized");
     }
