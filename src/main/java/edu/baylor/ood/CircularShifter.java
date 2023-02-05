@@ -21,7 +21,11 @@ public class CircularShifter implements Subscriber<String> {
 
     @Override
     public void onNext(String item) {
+        // Split words on a line.
         var words = item.split(" ");
+        // Submit original line wording.
+        shifts.submit(String.join(" ", words));
+        // Find and submit all combinations of words on a line.
         for (int i = 0; i < words.length - 1; i++) {
             var tmp = words[0];
             for (int j = 0; j < words.length - 1; j++) {
@@ -41,6 +45,7 @@ public class CircularShifter implements Subscriber<String> {
 
     @Override
     public void onComplete() {
+        // Mark the end of line shifts being published.
         shifts.close();
         System.out.println("All items have been shifted");
     }

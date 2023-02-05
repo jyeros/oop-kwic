@@ -1,8 +1,6 @@
 package edu.baylor.ood;
 
 import java.io.FileNotFoundException;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
@@ -12,23 +10,20 @@ public class Main {
         }
         String file = args[0];
 
+        // Initialize space to store lines and line shifts.
         LineStorageWrapper lines = new LineStorageWrapper();
         LineStorageWrapper shifts = new LineStorageWrapper();
-        SortedSet<String> alphabetized = new TreeSet<>();
+
+        // Initialize publishers and subscribers.
         Input input = new Input();
         CircularShifter shifter = new CircularShifter(shifts);
         lines.subscribe(shifter);
-        Alphabetizer alphabetizer = new Alphabetizer(alphabetized);
+        Alphabetizer alphabetizer = new Alphabetizer(shifts);
         shifts.subscribe(alphabetizer);
         Output output = new Output();
-        input.parse(file, lines);
 
-        // Wait for the alphabetizer to finish, probably in its onComplete method
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        output.print(alphabetized);
+        // Input lines and output all alphabetized shifts.
+        input.parse(file, lines);
+        output.print(shifts);
     }
 }
