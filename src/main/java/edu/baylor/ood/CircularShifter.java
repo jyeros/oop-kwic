@@ -22,6 +22,7 @@ public class CircularShifter implements Subscriber<String> {
     @Override
     public void onNext(String item) {
         var words = item.split(" ");
+        shifts.submit(String.join(" ", words));
         for (int i = 0; i < words.length - 1; i++) {
             var tmp = words[0];
             for (int j = 0; j < words.length - 1; j++) {
