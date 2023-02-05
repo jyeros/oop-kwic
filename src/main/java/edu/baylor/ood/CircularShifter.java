@@ -41,6 +41,7 @@ public class CircularShifter implements Subscriber<String> {
 
     @Override
     public void onComplete() {
+        shifts.close();
         System.out.println("All items have been shifted");
     }
 

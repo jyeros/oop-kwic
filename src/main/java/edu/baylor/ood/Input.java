@@ -13,6 +13,7 @@ public class Input {
             while (sc.hasNextLine()) {
                 lines.submit(sc.nextLine());
             }
+            lines.close();
         }
     }
 }
