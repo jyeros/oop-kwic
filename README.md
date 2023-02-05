@@ -1,2 +1,2 @@
-# ood-kwic
-Key Word in Context implementation
+# Event-Based KWIC
+Key Word in Context implementation with implicit method invocations

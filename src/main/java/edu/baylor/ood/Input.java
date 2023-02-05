@@ -9,10 +9,13 @@ public class Input {
     public void parse(String file, LineStorageWrapper lines) throws FileNotFoundException {
         var inStream = new FileInputStream(file);
 
+        // Read in all lines from file.
         try (var sc = new Scanner(inStream, StandardCharsets.UTF_8.name())) {
             while (sc.hasNextLine()) {
                 lines.submit(sc.nextLine());
             }
+            // Mark the end of input being published.
+            lines.close();
         }
     }
 }
